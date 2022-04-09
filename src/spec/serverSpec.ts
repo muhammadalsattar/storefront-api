@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../server.js"
+import app from "../app.js"
 
 describe("App router", () => {
     it("should return 200", async () => {

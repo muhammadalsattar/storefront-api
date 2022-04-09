@@ -1,9 +1,52 @@
-import app from "./server.js";
-import dotenv from 'dotenv';
-dotenv.config();
+import express from 'express'
+import bodyParser from 'body-parser';
+import userRouter from './routers/user.js';
+import productRouter from './routers/product.js';
+import orderRouter from './routers/order.js';
+import Service from './models/services/service.js';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import auth from './middleware/auth.js';
+import categoryRouter from './routers/category.js';
+import orderProductRouter from './routers/order_product.js';
 
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`Server is running! listening on port: ${port}`);
+
+const app = express();
+const service = new Service();
+
+app.use(bodyParser.json());
+
+app.get('/cart', auth, async (req, res) => {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
+    const userId = (decoded as JwtPayload).id
+    const order = await service.showCart(userId);
+    res.send(order);
 });
+app.get('/orders/order/:id', auth, async (req, res) => {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
+    const userId = (decoded as JwtPayload).id;
+    const order = await service.showOrderProducts(req.params.id as unknown as number, userId);
+    res.send(order);
+});
+app.post('/purchase', auth, async (req, res) => {
+    try{
+        const token = req.header("Authorization")?.replace("Bearer ", "");
+        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
+        const userId = (decoded as JwtPayload).id
+        const orderProduct = await service.purchase(userId, req.body.product_id as unknown as number, req.body.quantity as unknown as number);
+        res.send(orderProduct);
+    } catch(e){
+        res.status(400).send(e);
+    }
+});
+
+app.use(orderRouter);
+app.use(userRouter);
+app.use(productRouter);
+app.use(categoryRouter);
+app.use(orderProductRouter)
+
+
+export default app;

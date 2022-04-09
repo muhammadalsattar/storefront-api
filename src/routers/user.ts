@@ -14,7 +14,11 @@ userRouter.get('/users', auth, async (req: express.Request, res: express.Respons
 });
 userRouter.get('/users/:id', auth, async (req: express.Request, res: express.Response) => {
     const user = await userInstance.getById(req.params.id as unknown as number);
-    res.send(user);
+    if(user) {
+        res.send(user);
+    } else {
+        res.status(404).send();
+    }
 });
 userRouter.post('/users/login', async (req: express.Request, res: express.Response) => {
     const user = await userInstance.login(req.body.username, req.body.password);
@@ -22,20 +26,21 @@ userRouter.post('/users/login', async (req: express.Request, res: express.Respon
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
         res.send({user, token});
     }
-    res.status(404).send();
+    else {
+        res.status(404).send();
+    }
 });
 userRouter.post('/users', async (req: express.Request, res: express.Response) => {
     const user = await userInstance.create(req.body);
     const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
     res.status(201).send({user, token});
 });
-userRouter.patch('/users/:id', async (req: express.Request, res: express.Response) => {
-    const user = await userInstance.update(req.params.id as unknown as number, req.body.user);
-    res.send(user);
-});
 userRouter.delete('/users/:id', (req: express.Request, res: express.Response) => {
     const user = userInstance.delete(req.params.id as unknown as number);
-    res.send(user);
+    if(user){
+        res.send(user);
+    }
+    res.status(404).send();
 });
 userRouter.delete('/users', (req: express.Request, res: express.Response) => {
     const users = userInstance.deleteAll();

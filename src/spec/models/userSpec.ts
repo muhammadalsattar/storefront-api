@@ -22,10 +22,6 @@ describe("User model", () => {
         expect(myUser.login("test", "test")).toBeDefined();
     });
 
-    it("should update user", async () => {
-        expect(myUser.update).toBeDefined();
-    });
-
     it("should delete user", async () => {
         expect(myUser.delete).toBeDefined();
     });

@@ -24,9 +24,9 @@ class Order {
         const orders = results.rows;
         return orders;
     }
-    async create(order: order, user_id: number): Promise<order> {
+    async complete(order_id: number, userId: number): Promise<order> {
         const client = await pool.connect();
-        const results = await client.query('INSERT INTO orders (user_id, product_id, quantity, status) VALUES ($1, $2, $3, $4) RETURNING *', [user_id, order.product_id, order.quantity, order.status]);
+        const results = await client.query("UPDATE orders SET status = 'completed' WHERE id = $1 AND user_id = $2 RETURNING *", [order_id, userId]);
         client.release()
         const orders = results.rows;
         return orders[0];

@@ -14,17 +14,22 @@ orderRouter.get('/orders/:userId', auth, async (req: express.Request, res: expre
     res.send(orders);
 });
 
-orderRouter.get('/orders/:userId/status/:status', auth, async (req: express.Request, res: express.Response) => {
+orderRouter.get('/orders/:userId/:status', auth, async (req: express.Request, res: express.Response) => {
     const orders = await orderInstance.getByStatus(req.params.userId as unknown as number ,req.params.status as unknown as string);
     res.send(orders);
 });
 
-orderRouter.post('/orders', auth, async (req: express.Request, res: express.Response) => {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
-    const decoded = jwt.verify(token as string, process.env.JWT_SECRET as Secret);
-    const id = (decoded as JwtPayload).id;
-    const order = await orderInstance.create(req.body, id);
-    res.send(order);
+orderRouter.post('/checkout/:id', auth, async (req: express.Request, res: express.Response) => {
+    try{
+        const token = req.header("Authorization")?.replace("Bearer ", "");
+        const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
+        const userId = (decoded as JwtPayload).id
+        const order = await orderInstance.complete(req.params.id as unknown as number, userId);
+        res.send(order);
+    }
+    catch(err){
+        res.status(401).send(err);
+    }
 });
 
 export default orderRouter;

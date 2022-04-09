@@ -17,14 +17,6 @@ describe("User router", () => {
             password: "test",
         }).expect(200);
     });
-    it("should update user and return 200", async () => {
-        request(userRouter).patch("/users/1").send({
-            user: {
-                username: "test",
-                password: "test",
-            },
-        }).expect(200);
-    });
     it("should delete user and return 200", async () => {
         request(userRouter).delete("/users/1").expect(200);
     });

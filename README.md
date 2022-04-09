@@ -1,28 +1,31 @@
 # Storefront RESTful API with Postgres database.
 
-<hr>
-
 ### Setup and connect to database:
-1. Install Potgres locally on your machine
-2. Create database with any name
-3. Create .env file in the root directory
+- Create new user: `CREATE USER reviewer WITH PASSWORD 'pass1234';`
+- Create database `CREATE DATABASE storefront_db;`
+- Give access to new user `GRANT ALL PRIVILEGES ON DATABASE storefront_db TO reviewer`;
 
 <hr>
 
-### Required environment variables for the '.env' file:
-- DB_HOST="your-database-host"
-- DB_NAME="your-database-name"
-- DB_USER="your-database-user"
-- DB_PASSWORD="your-database-password"
-- DB_PORT="your-database-port"
-- DB_TEST="your-test-database-name"
-- DATABASE_URL="postgres://your-database-user:your-database-password@your-database-host:your-database-port/your-database-name"
-- JWT_SECRET="your-json-web-token-secret-key"
+### Package installation instructions:
+- Run `npm i` to install all packages and dependecies.
+
+<hr>
+
+### .env file:
+- Create .env file in the root directory.
+- Set environment variables as follows:
+    - `DB_HOST="localhost"`
+    - `DB_NAME="storefront_db"`
+    - `DB_USER="reviewer"`
+    - `DB_PASSWORD="pass1234"`
+    - `DB_PORT="5432"`
+    - `DATABASE_URL="postgres://reviewer:pass1234@localhost:5432/storefront_db"`
+    - `JWT_SECRET="secret"`
 
 <hr>
 
 ###  Scripts:
-- Run `npm i` to install all packages and dependecies.
 - Run `npm run build` to create build directory.
 - Run `npm run test` to run all test suites.
 - Run `npm run migrate` to run all migrations.

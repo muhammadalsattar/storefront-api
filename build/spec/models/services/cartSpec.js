@@ -1,5 +1,4 @@
 import Cart from '../../../models/services/service.js';
-
 describe('Cart model', () => {
     it('should create an instance', () => {
         expect(new Cart()).toBeTruthy();

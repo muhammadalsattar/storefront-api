@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "test": "node-pg-migrate down 4 && node-pg-migrate up && jasmine",
+    "test": "node-pg-migrate down 5 && node-pg-migrate up && jasmine",
     "migrate": "node-pg-migrate up",
-    "start": "node-pg-migrate up && nodemon build/app.js"
+    "start": "node-pg-migrate up && nodemon build/server.js"
   },
   "keywords": [],
   "author": "",

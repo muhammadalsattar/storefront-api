@@ -1,5 +1,4 @@
 import Order from "../../models/order.js";
-
 describe("Order model", () => {
     it("should create an instance", () => {
         expect(new Order()).toBeTruthy();
