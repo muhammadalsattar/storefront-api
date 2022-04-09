@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import request from "supertest";
-import app from "../server.js";
+import app from "../app.js";
 describe("App router", () => {
     it("should return 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request(app).get("/cart");
