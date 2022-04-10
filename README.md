@@ -31,5 +31,5 @@
 ###  Scripts:
 - Run `npm run build` to create build directory.
 - Run `npm run test` to run all test suites.
-- Run `npm run migrate` to run all migrations.
+- Run `npm run migrate` to run all up migrations.
 - Run `npm run start` to run migrations and start the server.
