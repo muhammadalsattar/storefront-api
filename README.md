@@ -13,15 +13,18 @@
 <hr>
 
 ### .env file:
-- Create .env file in the root directory.
-- Set environment variables as follows:
+- Database connection variables:
     - `DB_HOST="localhost"`
     - `DB_NAME="storefront_db"`
     - `DB_USER="reviewer"`
     - `DB_PASSWORD="pass1234"`
     - `DB_PORT="5432"`
+- Database migrations (node-pg-migrate) variables:    
     - `DATABASE_URL="postgres://reviewer:pass1234@localhost:5432/storefront_db"`
+- Json web token secret key:    
     - `JWT_SECRET="secret"`
+- Server port:
+    - `PORT="3000"`
 
 <hr>
 
