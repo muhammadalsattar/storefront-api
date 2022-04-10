@@ -1,32 +1,32 @@
 # Storefront RESTful API with Postgres database.
 
 ### SQL queries to Setup and connect to the database:
-- `CREATE USER reviewer WITH PASSWORD 'pass1234';` <!-- create user reviewer -->
-- `CREATE DATABASE storefront_db;` <!-- create storefront_db database -->
-- `GRANT ALL PRIVILEGES ON DATABASE storefront_db TO reviewer;` <!-- grant access to user reviewer on database storefront_db -->
+- `CREATE USER reviewer WITH PASSWORD 'pass1234';` _create user reviewer_
+- `CREATE DATABASE storefront_db;` _create storefront\_db database_
+- `GRANT ALL PRIVILEGES ON DATABASE storefront_db TO reviewer;` _grant access to user reviewer on database storefront\_db_
 
 <hr>
 
-### Package installation instructions:
-- Run `npm i` to install all packages and dependecies.
+### Package installation command:
+- `npm i` _install all packages and dependecies._
 
 <hr>
 
 ### .env file:
 - Create .env file in the root directory.
 - Required environment variables
-    - `DB_HOST="localhost"` <!-- database host -->
-    - `DB_NAME="storefront_db"` <!-- database name -->
-    - `DB_USER="reviewer"` <!-- database user -->
-    - `DB_PASSWORD="pass1234"` <!-- database password -->
-    - `DB_PORT="5432"` <!-- database port -->
-    - `JWT_SECRET="secret"` <!-- jwt secret key -->
-    - `PORT="3000"` <!-- server port -->
+    - `DB_HOST="localhost"` _database host_
+    - `DB_NAME="storefront_db"` _database name_
+    - `DB_USER="reviewer"` _database user_
+    - `DB_PASSWORD="pass1234"` _database password_
+    - `DB_PORT="5432"` _database port_
+    - `JWT_SECRET="secret"` _jwt secret key_
+    - `PORT="3000"` _server port_
 
 <hr>
 
 ###  Commands:
-- `npm run build` <!-- create a build directory -->
-- `npm run test` <!-- run all test suites -->
-- `npm run migrate` <!-- run all up migrations -->
-- `npm run start` <!-- run dwon & up migrations and start the server -->
+- `npm run build` _create a build directory_
+- `npm run test` _run all test suites_
+- `npm run migrate` _run all up migrations_
+- `npm run start` _run down & up migrations and start the server_
