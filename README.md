@@ -1,9 +1,9 @@
 # Storefront RESTful API with Postgres database.
 
-### Setup and connect to database:
-- Create new user: `CREATE USER reviewer WITH PASSWORD 'pass1234';`
-- Create database `CREATE DATABASE storefront_db;`
-- Give access to new user `GRANT ALL PRIVILEGES ON DATABASE storefront_db TO reviewer`;
+### SQL queries to Setup and connect to the database:
+- `CREATE USER reviewer WITH PASSWORD 'pass1234';` <!-- create user reviewer -->
+- `CREATE DATABASE storefront_db;` <!-- create storefront_db database -->
+- `GRANT ALL PRIVILEGES ON DATABASE storefront_db TO reviewer;` <!-- grant access to user reviewer on database storefront_db -->
 
 <hr>
 
@@ -13,23 +13,20 @@
 <hr>
 
 ### .env file:
-- Database connection variables:
-    - `DB_HOST="localhost"`
-    - `DB_NAME="storefront_db"`
-    - `DB_USER="reviewer"`
-    - `DB_PASSWORD="pass1234"`
-    - `DB_PORT="5432"`
-- Database migrations (node-pg-migrate) variables:    
-    - `DATABASE_URL="postgres://reviewer:pass1234@localhost:5432/storefront_db"`
-- Json web token secret key:    
-    - `JWT_SECRET="secret"`
-- Server port:
-    - `PORT="3000"`
+- Create .env file in the root directory.
+- Required environment variables
+    - `DB_HOST="localhost"` <!-- database host -->
+    - `DB_NAME="storefront_db"` <!-- database name -->
+    - `DB_USER="reviewer"` <!-- database user -->
+    - `DB_PASSWORD="pass1234"` <!-- database password -->
+    - `DB_PORT="5432"` <!-- database port -->
+    - `JWT_SECRET="secret"` <!-- jwt secret key -->
+    - `PORT="3000"` <!-- server port -->
 
 <hr>
 
-###  Scripts:
-- Run `npm run build` to create build directory.
-- Run `npm run test` to run all test suites.
-- Run `npm run migrate` to run all up migrations.
-- Run `npm run start` to run migrations and start the server.
+###  Commands:
+- `npm run build` <!-- create a build directory -->
+- `npm run test` <!-- run all test suites -->
+- `npm run migrate` <!-- run all up migrations -->
+- `npm run start` <!-- run dwon & up migrations and start the server -->
