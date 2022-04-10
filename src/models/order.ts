@@ -1,11 +1,9 @@
 import pool from "../database.js";
 
 
-export type  order = {
+export type order = {
     id: number;
     user_id: number;
-    product_id: number;
-    quantity: number;
     status: string;
 }
 

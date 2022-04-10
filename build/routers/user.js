@@ -43,14 +43,14 @@ userRouter.post('/users', (req, res) => __awaiter(void 0, void 0, void 0, functi
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
     res.status(201).send({ user, token });
 }));
-userRouter.delete('/users/:id', (req, res) => {
+userRouter.delete('/users/:id', auth, (req, res) => {
     const user = userInstance.delete(req.params.id);
     if (user) {
         res.send(user);
     }
     res.status(404).send();
 });
-userRouter.delete('/users', (req, res) => {
+userRouter.delete('/users', auth, (req, res) => {
     const users = userInstance.deleteAll();
     res.send(users);
 });

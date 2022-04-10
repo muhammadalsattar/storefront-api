@@ -16,21 +16,21 @@ const service = new Service();
 
 app.use(bodyParser.json());
 
-app.get('/cart', auth, async (req, res) => {
+app.get('/cart', auth, async (req: express.Request, res: express.Response) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
     const userId = (decoded as JwtPayload).id
     const order = await service.showCart(userId);
     res.send(order);
 });
-app.get('/orders/order/:id', auth, async (req, res) => {
+app.get('/orders/order/:id', auth, async (req: express.Request, res: express.Response) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);
     const userId = (decoded as JwtPayload).id;
     const order = await service.showOrderProducts(req.params.id as unknown as number, userId);
     res.send(order);
 });
-app.post('/purchase', auth, async (req, res) => {
+app.post('/purchase', auth, async (req: express.Request, res: express.Response) => {
     try{
         const token = req.header("Authorization")?.replace("Bearer ", "");
         const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string);

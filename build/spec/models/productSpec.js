@@ -7,36 +7,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import Product from "../../models/product.js";
+import { setupDatabase, productInstance, productOne, categoryOne, productTwo } from "../fixtures/setup.js";
+beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield setupDatabase();
+}));
 describe("Product model", () => {
     it("should get all products", () => __awaiter(void 0, void 0, void 0, function* () {
-        const product = new Product();
-        expect(product.getAll()).toBeDefined();
+        const products = yield productInstance.getAll();
+        expect(products).toEqual([productOne]);
     }));
     it("should get product by id", () => __awaiter(void 0, void 0, void 0, function* () {
-        const product = new Product();
-        const newProduct = yield product.getById(1);
-        expect(product).toBeDefined();
-        expect(newProduct.id).toBe(1);
+        const product = yield productInstance.getById(productOne.id);
+        expect(product).toEqual(productOne);
     }));
     it("should create product", () => __awaiter(void 0, void 0, void 0, function* () {
-        const product = new Product();
-        const myProduct = {
-            id: 6,
-            name: "test",
-            price: 10,
-            category_id: 1
-        };
-        const newProduct = yield product.create(myProduct);
-        expect(newProduct).toBeDefined();
-        expect(newProduct.name).toBe("test");
-        expect(newProduct.price).toBe(10);
-        expect(newProduct.category_id).toBe(1);
+        const product = yield productInstance.create(productTwo);
+        expect(product).toEqual(Object.assign(Object.assign({}, productTwo), { id: 1 }));
     }));
     it("should get products by category id", () => __awaiter(void 0, void 0, void 0, function* () {
-        const product = new Product();
-        const products = yield product.getByCategoryId(1);
-        expect(product.getByCategoryId).toBeDefined();
-        expect(products[0].category_id).toBe(1);
+        const products = yield productInstance.getByCategoryId(categoryOne.id);
+        expect(products).toEqual([productOne]);
     }));
 });

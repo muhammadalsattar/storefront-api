@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "test": "node-pg-migrate down 5 && node-pg-migrate up && jasmine",
+    "test": "jasmine",
     "migrate": "node-pg-migrate up",
     "start": "node-pg-migrate up && nodemon build/server.js"
   },

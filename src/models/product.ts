@@ -1,7 +1,7 @@
 import pool from "../database.js";
 
 
-export type  product = {
+export type product = {
     id: number;
     name: string;
     price: number;

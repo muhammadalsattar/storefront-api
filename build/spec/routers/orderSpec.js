@@ -7,20 +7,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import request from 'supertest';
-import orderRouter from '../../routers/order.js';
-describe('Order router', () => {
-    it('should get order by id and return 200', () => __awaiter(void 0, void 0, void 0, function* () {
-        request(orderRouter).get('/orders/1').expect(200);
+import supertest from "supertest";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import app from "../../app.js";
+import { setupDatabase, orderOne, userOne } from "../fixtures/setup.js";
+dotenv.config();
+beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield setupDatabase();
+}));
+describe("Order router", () => {
+    it("should get orders by userId", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield supertest(app).get(`/orders/${orderOne.user_id}`).set("Authorization", `Bearer ${jwt.sign({ id: userOne.id }, process.env.JWT_SECRET)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual([orderOne]);
     }));
-    it('should get order by status and return 200', () => __awaiter(void 0, void 0, void 0, function* () {
-        request(orderRouter).get('/orders/1/status/active').expect(200);
+    it("should fail get orders for unauthenticated users", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield supertest(app).get(`/orders/${orderOne.user_id}`);
+        expect(response.status).toBe(401);
     }));
-    it('should create order and return 200', () => __awaiter(void 0, void 0, void 0, function* () {
-        request(orderRouter).post('/orders').send({
-            product_id: 1,
-            quantity: 5,
-            status: 'active',
-        }).expect(200);
+    it("should get orders by status", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield supertest(app).get(`/orders/${orderOne.user_id}/${orderOne.status}`).set("Authorization", `Bearer ${jwt.sign({ id: userOne.id }, process.env.JWT_SECRET)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual([orderOne]);
+    }));
+    it("should complete order", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield supertest(app).post(`/checkout/${orderOne.id}`).set("Authorization", `Bearer ${jwt.sign({ id: userOne.id }, process.env.JWT_SECRET)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(Object.assign(Object.assign({}, orderOne), { status: "completed" }));
     }));
 });

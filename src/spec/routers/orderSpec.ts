@@ -1,20 +1,32 @@
-import request from 'supertest';
-import orderRouter from '../../routers/order.js';
-import auth from '../../middleware/auth.js';
+import supertest from "supertest";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import app from "../../app.js";
+import {setupDatabase, orderOne, userOne} from "../fixtures/setup.js";
+dotenv.config();
+beforeEach(async () => {
+    await setupDatabase();
+});
 
-describe('Order router', () => {
-    it('should get order by id and return 200', async () => {
-        request(orderRouter).get('/orders/1').expect(200);
+describe("Order router", () => {
+    it("should get orders by userId", async () => {
+        const response = await supertest(app).get(`/orders/${orderOne.user_id}`).set("Authorization", `Bearer ${jwt.sign({id: userOne.id}, process.env.JWT_SECRET as string)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual([orderOne]);
     });
-    it('should get order by status and return 200', async () => {
-        request(orderRouter).get('/orders/1/status/active').expect(200);
+    it("should fail get orders for unauthenticated users", async () => {
+        const response = await supertest(app).get(`/orders/${orderOne.user_id}`);
+        expect(response.status).toBe(401);
     });
-    it('should create order and return 200', async () => {
-        request(orderRouter).post('/orders').send({
-            product_id : 1,
-            quantity: 5,
-            status: 'active',
-        }).expect(200);
+    it("should get orders by status", async () => {
+        const response = await supertest(app).get(`/orders/${orderOne.user_id}/${orderOne.status}`).set("Authorization", `Bearer ${jwt.sign({id: userOne.id}, process.env.JWT_SECRET as string)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual([orderOne]);
+    });
+    it("should complete order", async () => {
+        const response = await supertest(app).post(`/checkout/${orderOne.id}`).set("Authorization", `Bearer ${jwt.sign({id: userOne.id}, process.env.JWT_SECRET as string)}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({...orderOne, status: "completed"});
     });
 
 });

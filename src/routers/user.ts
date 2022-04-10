@@ -35,14 +35,14 @@ userRouter.post('/users', async (req: express.Request, res: express.Response) =>
     const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
     res.status(201).send({user, token});
 });
-userRouter.delete('/users/:id', (req: express.Request, res: express.Response) => {
+userRouter.delete('/users/:id', auth, (req: express.Request, res: express.Response) => {
     const user = userInstance.delete(req.params.id as unknown as number);
     if(user){
         res.send(user);
     }
     res.status(404).send();
 });
-userRouter.delete('/users', (req: express.Request, res: express.Response) => {
+userRouter.delete('/users', auth, (req: express.Request, res: express.Response) => {
     const users = userInstance.deleteAll();
     res.send(users);
 });

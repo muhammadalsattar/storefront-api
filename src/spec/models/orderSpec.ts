@@ -1,19 +1,20 @@
-import Order from "../../models/order.js";
+import {setupDatabase, orderInstance, userOne, orderOne, productOne, orderProductOne } from "../fixtures/setup.js";
+
+beforeEach(async () => {
+    await setupDatabase();
+});
 
 describe("Order model", () => {
-    it("should create an instance", () => {
-        expect(new Order()).toBeTruthy();
+    it("should get orders by user id", async () => {
+        const orders = await orderInstance.getByUserId(userOne.id);
+        expect(orders).toEqual([orderOne]);
     });
-    it("should have a property getByUserId", () => {
-        const order = new Order();
-        expect(order.getByUserId).toBeDefined();
+    it("should get orders by status", async () => {
+        const orders = await orderInstance.getByStatus(userOne.id, orderOne.status);
+        expect(orders).toEqual([orderOne]);
     });
-    it("should have a property getByStatus", () => {
-        const order = new Order();
-        expect(order.getByStatus).toBeDefined();
+    it("should complete order", async () => {
+        const order = await orderInstance.complete(orderOne.id, userOne.id);
+        expect(order).toEqual({...orderOne, status: "completed"});
     });
-    // it("should have a property create", () => {
-    //     const order = new Order();
-    //     expect(order.create).toBeDefined();
-    // }); 
 });

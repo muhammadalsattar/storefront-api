@@ -7,27 +7,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import User from "../../models/user.js";
-const myUser = new User();
+import bcrypt from "bcrypt";
+import { setupDatabase, userInstance, userOne, userOnePassword, userTwoPassword, userTwo } from "../fixtures/setup.js";
+beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield setupDatabase();
+}));
 describe("User model", () => {
     it("should get all users", () => __awaiter(void 0, void 0, void 0, function* () {
-        expect(myUser.getAll()).toBeDefined();
+        const users = yield userInstance.getAll();
+        expect(users).toEqual([userOne]);
     }));
     it("should get user by id", () => __awaiter(void 0, void 0, void 0, function* () {
-        const newUser = yield myUser.getById(1);
-        expect(myUser.getById).toBeDefined();
-        expect(newUser.id).toBe(1);
+        const user = yield userInstance.getById(userOne.id);
+        expect(user).toEqual(userOne);
     }));
     it("should create user", () => __awaiter(void 0, void 0, void 0, function* () {
-        expect(myUser.create).toBeDefined();
+        const user = yield userInstance.create(userTwo);
+        expect(user.email).toEqual(userTwo.email);
+        expect(user.username).toEqual(userTwo.username);
+        expect(bcrypt.compareSync(userTwoPassword, user.password)).toBe(true);
     }));
     it("should login user", () => __awaiter(void 0, void 0, void 0, function* () {
-        expect(myUser.login("test", "test")).toBeDefined();
+        const user = yield userInstance.login(userOne.username, userOnePassword);
+        expect(user).toEqual(userOne);
     }));
     it("should delete user", () => __awaiter(void 0, void 0, void 0, function* () {
-        expect(myUser.delete).toBeDefined();
+        const user = yield userInstance.delete(userOne.id);
+        expect(user).toEqual(userOne);
     }));
-    it('should delete all users', () => __awaiter(void 0, void 0, void 0, function* () {
-        expect(myUser.deleteAll).toBeDefined();
+    it("should delete all users", () => __awaiter(void 0, void 0, void 0, function* () {
+        const users = yield userInstance.deleteAll();
+        expect(users).toEqual([]);
     }));
 });
