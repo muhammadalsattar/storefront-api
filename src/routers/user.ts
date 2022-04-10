@@ -9,42 +9,66 @@ const userRouter = express.Router();
 const userInstance = new User();
 
 userRouter.get('/users', auth, async (req: express.Request, res: express.Response) => {
-    const users = await userInstance.getAll();
-    res.send(users);
+    try {
+        const users = await userInstance.getAll();
+        res.send(users);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 userRouter.get('/users/:id', auth, async (req: express.Request, res: express.Response) => {
-    const user = await userInstance.getById(req.params.id as unknown as number);
-    if(user) {
-        res.send(user);
-    } else {
-        res.status(404).send();
+    try {
+        const user = await userInstance.getById(req.params.id as unknown as number);
+        if(user) {
+            res.send(user);
+        } else {
+            res.status(404).send();
+        }
+    } catch (err) {
+        res.status(400).send(err);
     }
 });
 userRouter.post('/users/login', async (req: express.Request, res: express.Response) => {
-    const user = await userInstance.login(req.body.username, req.body.password);
-    if(user){
-        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
-        res.send({user, token});
-    }
-    else {
-        res.status(404).send();
+    try {
+        const user = await userInstance.login(req.body.username, req.body.password);
+        if(user){
+            const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
+            res.send({user, token});
+        }
+        else {
+            res.status(404).send();
+        }
+    } catch (err) {
+        res.status(400).send(err);
     }
 });
 userRouter.post('/users', async (req: express.Request, res: express.Response) => {
-    const user = await userInstance.create(req.body);
-    const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
-    res.status(201).send({user, token});
+    try {
+        const user = await userInstance.create(req.body);
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET as Secret)
+        res.status(201).send({user, token});
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 userRouter.delete('/users/:id', auth, (req: express.Request, res: express.Response) => {
-    const user = userInstance.delete(req.params.id as unknown as number);
-    if(user){
-        res.send(user);
+    try {
+        const user = userInstance.delete(req.params.id as unknown as number);
+        if(user){
+            res.send(user);
+        }
+        res.status(404).send();
+    } catch (err) {
+        res.status(400).send(err);
     }
-    res.status(404).send();
 });
 userRouter.delete('/users', auth, (req: express.Request, res: express.Response) => {
-    const users = userInstance.deleteAll();
-    res.send(users);
+    try {
+        const users = userInstance.deleteAll();
+        res.send(users);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 export default userRouter;

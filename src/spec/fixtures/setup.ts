@@ -64,7 +64,8 @@ export const orderProductOne: order_product = {
 }
 
 export const setupDatabase = async () => {
-    const client = await pool.connect();
+    try {
+        const client = await pool.connect();
     await client.query("BEGIN");
 
     await client.query("DROP TABLE IF EXISTS users CASCADE");
@@ -87,4 +88,7 @@ export const setupDatabase = async () => {
 
     await client.query("COMMIT");
     client.release();
+    } catch (err) {
+        throw new Error(err as string);
+    }
 }

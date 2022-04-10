@@ -9,18 +9,26 @@ export type order_product = {
 
 class OrderProduct {
     async getByOrderId(order_id: number): Promise<order_product[]> {
-        const client = await pool.connect();
-        const results = await client.query('SELECT * FROM order_product WHERE order_id = $1', [order_id]);
-        client.release()
-        const order_products = results.rows;
-        return order_products;
+        try{
+            const client = await pool.connect();
+            const results = await client.query('SELECT * FROM order_product WHERE order_id = $1', [order_id]);
+            client.release()
+            const order_products = results.rows;
+            return order_products;
+        } catch (err) {
+            throw new Error(err as string);
+        }
     }
     async getByProductId(product_id: number): Promise<order_product[]> {
-        const client = await pool.connect();
-        const results = await client.query('SELECT * FROM order_product WHERE product_id = $1', [product_id]);
-        client.release()
-        const order_products = results.rows;
-        return order_products;
+        try{
+            const client = await pool.connect();
+            const results = await client.query('SELECT * FROM order_product WHERE product_id = $1', [product_id]);
+            client.release()
+            const order_products = results.rows;
+            return order_products;
+        } catch (err) {
+            throw new Error(err as string);
+        }
     }
 }
 

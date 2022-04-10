@@ -10,13 +10,21 @@ const orderRouter = express.Router();
 const orderInstance = new Order()
 
 orderRouter.get('/orders/:userId', auth, async (req: express.Request, res: express.Response) => {
-    const orders = await orderInstance.getByUserId(req.params.userId as unknown as number);
-    res.send(orders);
+    try {
+        const orders = await orderInstance.getByUserId(req.params.userId as unknown as number);
+        res.send(orders);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 orderRouter.get('/orders/:userId/:status', auth, async (req: express.Request, res: express.Response) => {
-    const orders = await orderInstance.getByStatus(req.params.userId as unknown as number ,req.params.status as unknown as string);
-    res.send(orders);
+    try {
+        const orders = await orderInstance.getByStatus(req.params.userId as unknown as number ,req.params.status as unknown as string);
+        res.send(orders);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 orderRouter.post('/checkout/:id', auth, async (req: express.Request, res: express.Response) => {
